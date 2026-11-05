@@ -3,14 +3,23 @@ package main;
 public class BankAccount {
 
     private double balance;
+    private int accountID;
 
     public BankAccount() {
         this.balance = 0;
     }
 
     public void deposit(double amount) {
-        if(amount > 0) {
+        if(amount >= 0) {
             this.balance += amount;
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    public void withdraw(double amount){
+        if(amount>=0){
+            this.balance -= amount;
         } else {
             throw new IllegalArgumentException();
         }
@@ -19,4 +28,5 @@ public class BankAccount {
     public double getBalance() {
         return this.balance;
     }
+
 }

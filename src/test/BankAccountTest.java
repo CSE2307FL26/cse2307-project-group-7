@@ -26,4 +26,40 @@ public class BankAccountTest {
             //do nothing, test passes
         }
     }
+
+    @Test 
+    public void testWithdraw(){
+        BankAccount testAccount = new BankAccount();
+        testAccount.deposit(50);
+
+        testAccount.withdraw(20);
+        assertEquals(30, testAccount.getBalance(),0.01);
+    }
+
+    @Test 
+    public void testInvalidWithdraw(){
+        BankAccount testAccount = new BankAccount();
+        testAccount.deposit(50);
+        try {
+            testAccount.withdraw(-20);
+            fail();
+        } catch (IllegalArgumentException e) {
+            //do nothing, test passes
+        }
+    }
+
+    @Test
+    public void testWithdrawMoreThanBalance(){
+        BankAccount testAccount = new BankAccount();
+        testAccount.withdraw(20);
+        assertEquals(-20, testAccount.getBalance(),0.01);
+    }
+
+    @Test 
+    public void testEmptyWithdraw(){
+        BankAccount testAccount = new BankAccount();
+        testAccount.deposit(50);
+        testAccount.withdraw(0);
+        assertEquals(50, testAccount.getBalance(), 0.1);
+    }
 }
