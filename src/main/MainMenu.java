@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class MainMenu {
 
     private static final int EXIT_SELECTION = 2;
-    private static final int MAX_SELECTION = 8;
+    private static final int MAX_SELECTION = 10;
 
 	private Customer currentCustomer;
     private Scanner keyboardInput;
@@ -23,10 +23,16 @@ public class MainMenu {
 
     System.out.println("1. Make a deposit");
     System.out.println("2. Exit the app");
-    System.out.println("3. Collect an account fee (admin)");
-    System.out.println("4. Add an interest payment (admin)");
+    System.out.println("3. Withdraw from account");
+    System.out.println("4. Check account balance");
     System.out.println("5. View transaction history");
+    System.out.println("6. Create new account");
+    System.out.println("7. Close existing account");
     System.out.println("8. Transfer between accounts");
+    System.out.println("9. Collect fees (admin)");
+    System.out.println("10. Add interest (admin)");
+
+
 }
 
     public int getUserSelection(int max) {
@@ -38,29 +44,43 @@ public class MainMenu {
         return selection;
     }
 
+
     public void processInput(int selection) {
-    switch (selection) {
-        case 1:
-            performDeposit();
-            break;
-        case 2:
-            break;
-        case 3:
-            performCollectFee();
-            break;
-        case 4:
-            performAddInterestPayment();
-            break;
-        case 5:
-            performViewTransactionHistory();
-            break;
-        case 8:
-            performTransfer();
-            break;
-        default:
-            System.out.println("Invalid selection.");
+        switch (selection) {
+            case 1:
+                performDeposit();
+                break;
+            case 2:
+                break;
+            case 3:
+                // performWithdraw();
+                break;
+            case 4:
+                // performCheckBalance();
+                break;
+            case 5:
+                performViewTransactionHistory();
+                break;
+            case 6:
+                // performCreateAccount();
+                break;
+            case 7:
+                // performCloseAccount();
+                break;
+            case 8:
+                performTransfer();
+                break;
+            case 9:
+                performCollectFee();
+                break;
+            case 10:
+                performAddInterestPayment();
+                break;
+            default:
+                System.out.println("Invalid selection.");
+        }
     }
-}
+    
 
 
     public BankAccount selectAccount() {
