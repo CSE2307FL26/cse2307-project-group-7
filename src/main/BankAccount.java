@@ -1,7 +1,6 @@
 package main;
 import java.util.ArrayList;
 
-
 public class BankAccount {
 
     private double balance;
@@ -14,7 +13,7 @@ public class BankAccount {
     }
 
     public void deposit(double amount) {
-        if(amount >= 0) {
+        if (amount >= 0) {
             this.balance += amount;
             transactionHistory.add(new Transaction("Deposit", amount));
         } else {
@@ -22,8 +21,8 @@ public class BankAccount {
         }
     }
 
-    public void withdraw(double amount){
-        if(amount>=0){
+    public void withdraw(double amount) {
+        if (amount >= 0) {
             this.balance -= amount;
         } else {
             throw new IllegalArgumentException();
@@ -37,6 +36,17 @@ public class BankAccount {
         balance -= amount;
     }
 
+   public void addInterestPayment(double amount) {
+    if (!Double.isFinite(amount) || amount <= 0) {
+        throw new IllegalArgumentException(
+            "Invalid interest payment amount"
+        );
+    }
+
+    balance += amount;
+    transactionHistory.add(new Transaction("Interest Payment", amount));
+}
+
     public double getBalance() {
         return this.balance;
     }
@@ -45,4 +55,3 @@ public class BankAccount {
         return new ArrayList<>(transactionHistory);
     }
 }
-

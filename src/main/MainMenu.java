@@ -4,10 +4,10 @@ import java.util.Scanner;
 
 public class MainMenu {
 
-    private static final int EXIT_SELECTION = 3;
-	private static final int MAX_SELECTION = 3;
+    private static final int EXIT_SELECTION = 4;
+    private static final int MAX_SELECTION = 4;
 
-	private BankAccount userAccount;
+    private BankAccount userAccount;
     private Scanner keyboardInput;
 
     public MainMenu() {
@@ -17,16 +17,16 @@ public class MainMenu {
 
     public void displayOptions() {
         System.out.println("Welcome to the 237 Bank App!");
-        
+
         System.out.println("1. Make a deposit");
         System.out.println("2. Collect an account fee (admin)");
-        System.out.println("3. Exit the app");
-
+        System.out.println("3. Add an interest payment (admin)");
+        System.out.println("4. Exit the app");
     }
 
     public int getUserSelection(int max) {
         int selection = -1;
-        while(selection < 1 || selection > max) {
+        while (selection < 1 || selection > max) {
             System.out.print("Please make a selection: ");
             selection = keyboardInput.nextInt();
         }
@@ -41,12 +41,15 @@ public class MainMenu {
             case 2:
                 performCollectFee();
                 break;
+            case 3:
+                performAddInterestPayment();
+                break;
         }
     }
 
     public void performDeposit() {
         double depositAmount = -1;
-        while(depositAmount < 0) {
+        while (depositAmount < 0) {
             System.out.print("How much would you like to deposit: ");
             depositAmount = keyboardInput.nextInt();
         }
@@ -56,6 +59,7 @@ public class MainMenu {
     public void performCollectFee() {
         System.out.print("Enter the fee amount: ");
         double feeAmount = keyboardInput.nextDouble();
+
         try {
             userAccount.collectFee(feeAmount);
             System.out.println("Fee collected successfully.");
@@ -64,9 +68,21 @@ public class MainMenu {
         }
     }
 
+    public void performAddInterestPayment() {
+        System.out.print("Enter the interest payment amount: ");
+        double interestAmount = keyboardInput.nextDouble();
+
+        try {
+            userAccount.addInterestPayment(interestAmount);
+            System.out.println("Interest payment added successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to add interest payment: amount must be positive.");
+        }
+    }
+
     public void run() {
         int selection = -1;
-        while(selection != EXIT_SELECTION) {
+        while (selection != EXIT_SELECTION) {
             displayOptions();
             selection = getUserSelection(MAX_SELECTION);
             processInput(selection);
@@ -77,5 +93,4 @@ public class MainMenu {
         MainMenu bankApp = new MainMenu();
         bankApp.run();
     }
-
 }
