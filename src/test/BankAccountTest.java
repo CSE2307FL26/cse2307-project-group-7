@@ -95,4 +95,70 @@ public class BankAccountTest {
         testAccount.withdraw(0);
         assertEquals(50, testAccount.getBalance(), 0.1);
     }
+
+
+    @Test
+    public void testTransferBetweenAccounts() {
+        BankAccount source = new BankAccount();
+        BankAccount target = new BankAccount();
+
+        source.deposit(200);
+        source.transfer(target, 75);
+
+        assertEquals(125, source.getBalance(), 0.01);
+        assertEquals(75, target.getBalance(), 0.01);
+    }
+
+
+@Test
+public void testTransferInsufficientFunds() {
+    BankAccount source = new BankAccount();
+    BankAccount target = new BankAccount();
+
+    source.deposit(50);
+
+    assertThrows(IllegalArgumentException.class,
+        () -> source.transfer(target, 100));
+
+    assertEquals(50, source.getBalance(), 0.01);
+    assertEquals(0, target.getBalance(), 0.01);
+}
+
+@Test
+public void testTransferInvalidAmount() {
+    BankAccount source = new BankAccount();
+    BankAccount target = new BankAccount();
+
+    source.deposit(100);
+
+    assertThrows(IllegalArgumentException.class,
+        () -> source.transfer(target, -20));
+
+    assertThrows(IllegalArgumentException.class,
+        () -> source.transfer(target, 0));
+}
+
+    @Test
+    public void testTransferRecorded() {
+        BankAccount source = new BankAccount();
+        BankAccount target = new BankAccount();
+
+        source.deposit(100);
+        source.transfer(target, 40);
+
+        assertEquals(2, source.getTransactionHistory().size());
+        assertEquals(1, target.getTransactionHistory().size());
+
+        assertEquals("Transfer Out",
+            source.getTransactionHistory().get(1).getType());
+
+        assertEquals("Transfer In",
+            target.getTransactionHistory().get(0).getType());
+
+        assertEquals(40,
+            target.getTransactionHistory().get(0).getAmount(), 0.01);
+    }
+
+    //transfer from account to that same account? transfer from account to nonexistent account
+
 }

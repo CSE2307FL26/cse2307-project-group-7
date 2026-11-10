@@ -2,16 +2,19 @@ package main;
 
 import java.util.Scanner;
 
+import java.util.ArrayList;
+
 public class MainMenu {
 
     private static final int EXIT_SELECTION = 2;
 	private static final int MAX_SELECTION = 2;
 
-	private BankAccount userAccount;
+	private Customer currentCustomer;
     private Scanner keyboardInput;
 
     public MainMenu() {
-        this.userAccount = new BankAccount();
+        this.currentCustomer = new Customer(1);
+        this.currentCustomer.addAccount(new BankAccount());
         this.keyboardInput = new Scanner(System.in);
     }
 
@@ -20,6 +23,9 @@ public class MainMenu {
         
         System.out.println("1. Make a deposit");
         System.out.println("2. Exit the app");
+        System.out.println("5. View transaction history");
+        System.out.println("8. Transfer between accounts");
+
 
     }
 
@@ -39,13 +45,82 @@ public class MainMenu {
         }
     }
 
-    public void performDeposit() {
-        double depositAmount = -1;
-        while(depositAmount < 0) {
-            System.out.print("How much would you like to deposit: ");
-            depositAmount = keyboardInput.nextInt();
+
+    public BankAccount selectAccount() {
+        ArrayList<BankAccount> accounts = currentCustomer.listAccounts();
+    
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available.");
+            return null;
         }
-        userAccount.deposit(depositAmount);
+    
+        System.out.println("Your accounts:");
+    
+        for (BankAccount account : accounts) {
+            System.out.println("Account ID: " + account.getAccountID() + " | Balance: $" + account.getBalance());
+        }
+    
+        System.out.print("Enter your account ID: ");
+        int accountID = keyboardInput.nextInt();
+    
+        for (BankAccount account : accounts) {
+            if (account.getAccountID() == accountID) {
+                return account;
+            }
+        }
+    
+        System.out.println("Account not found.");
+        return null;
+    }
+    
+
+    public void performDeposit() {
+        BankAccount account = selectAccount();
+
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("How much do you want to deposit: ");
+        double amount = keyboardInput.nextDouble();
+
+        try {
+            account.deposit(amount);
+            System.out.println("Deposit success."); 
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid depoist amount.");
+        }
+        
+    }
+
+    public void performTransfer() {
+        if (currentCustomer.listAccounts().size() < 2) {
+            System.out.println("You need at least two accounts to transfer money.");
+            return;
+        }
+
+        System.out.println("Select source account:");
+        BankAccount source = selectAccount();
+
+        if (source == null) {
+            return;
+        }
+        System.out.println("Select target account: ");
+        BankAccount target = selectAccount();
+
+        if (target == null) {
+            return;
+        }
+
+        System.out.print("Enter transfer amount: ");
+        double amount = keyboardInput.nextDouble();
+
+        try {
+            source.transfer(target, amount);
+            System.out.println("Transfer success");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Transfer failed.");
+        }
     }
 
     public void run() {
