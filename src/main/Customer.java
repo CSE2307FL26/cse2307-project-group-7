@@ -22,6 +22,16 @@ public class Customer {
     }
 
 
+    public boolean removeAccount(int accountIndex){
+        if (accountIndex < 0 || accountIndex >= accounts.size()){
+            return false;
+        }
+
+        accounts.remove(accountIndex);
+        return true;
+    }
+
+
     public ArrayList<BankAccount> listAccounts(){
         return new ArrayList<>(accounts);
     }

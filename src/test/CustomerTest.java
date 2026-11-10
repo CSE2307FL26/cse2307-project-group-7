@@ -66,5 +66,14 @@ public class CustomerTest {
         } catch (IllegalArgumentException e) {
             //do nothing, test passes
         }
+    @Test 
+    public void testCloseAcct(){
+        Customer customer = new Customer(1);
+        BankAccount account = new BankAccount();
+
+        customer.addAccount(account);
+        customer.removeAccount(0);
+
+        assertEquals(0, customer.listAccounts().size());
     }
 }
