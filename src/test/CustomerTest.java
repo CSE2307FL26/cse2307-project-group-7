@@ -27,4 +27,15 @@ public class CustomerTest {
 
         assertEquals(1, customer.listAccounts().size());
     }
+
+    @Test 
+    public void testCloseAcct(){
+        Customer customer = new Customer(1);
+        BankAccount account = new BankAccount();
+
+        customer.addAccount(account);
+        customer.removeAccount(0);
+
+        assertEquals(0, customer.listAccounts().size());
+    }
 }
