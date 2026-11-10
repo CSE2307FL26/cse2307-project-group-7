@@ -1,8 +1,7 @@
 package main;
 
-import java.util.Scanner;
-
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MainMenu {
 
@@ -65,7 +64,7 @@ public class MainMenu {
                 // performCreateAccount();
                 break;
             case 7:
-                // performCloseAccount();
+                performCloseAccount();
                 break;
             case 8:
                 performTransfer();
@@ -131,6 +130,29 @@ public class MainMenu {
 }
 
 
+
+public void performCloseAccount() {
+    ArrayList<BankAccount> accounts = currentCustomer.listAccounts();
+
+    if (accounts.isEmpty()) {
+        System.out.println("No accounts available to close.");
+        return;
+    }
+
+    BankAccount account = selectAccount();
+
+    if (account == null) {
+        return;
+    }
+
+    int accountIndex = accounts.indexOf(account);
+
+    if (currentCustomer.removeAccount(accountIndex)) {
+        System.out.println("Account closed");
+    } else {
+        System.out.println("Unable to close account.");
+    }
+}
 public void performDeposit() {
     BankAccount account = selectAccount();
 
