@@ -26,5 +26,12 @@ public class Customer {
         return new ArrayList<>(accounts);
     }
 
-
+    public double checkAccountBalance(BankAccount account){
+        if(accounts.contains(account)){
+            return account.getBalance();
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+    }
 }
