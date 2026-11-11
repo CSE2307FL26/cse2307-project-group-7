@@ -53,7 +53,7 @@ public class MainMenu {
             case 2:
                 break;
             case 3:
-                // performWithdraw();
+                performWithdraw();
                 break;
             case 4:
                 // performCheckBalance();
@@ -217,7 +217,20 @@ public void performAddInterestPayment() {
         System.out.println("Unable to add interest payment: invalid amount.");
     }
 }
-
+    public void performWithdraw(){
+        BankAccount account = selectAccount();
+        if (account == null) {
+            return;
+        }
+        System.out.print("How much do you want to withdraw: ");
+        double amount = keyboardInput.nextDouble();
+        try {
+            account.withdraw(amount);
+            System.out.println("Withdraw successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid withdraw amount.");
+        }
+    }
 
     public void run() {
         int selection = -1;
