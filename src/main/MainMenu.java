@@ -56,7 +56,7 @@ public class MainMenu {
                 // performWithdraw();
                 break;
             case 4:
-                // performCheckBalance();
+                performCheckBalance();
                 break;
             case 5:
                 performViewTransactionHistory();
@@ -218,6 +218,15 @@ public void performAddInterestPayment() {
     }
 }
 
+    public void performCheckBalance(){
+        BankAccount account = selectAccount();
+        if (account == null) {
+            return;
+        }
+        double balance = currentCustomer.checkAccountBalance(account);
+        int id = account.getAccountID();
+        System.out.println("Your balance for account " + id + " is: $"+balance);
+    }
 
     public void run() {
         int selection = -1;
