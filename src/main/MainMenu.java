@@ -53,7 +53,7 @@ public class MainMenu {
             case 2:
                 break;
             case 3:
-                // performWithdraw();
+                performWithdraw();
                 break;
             case 4:
                 performCheckBalance();
@@ -226,6 +226,22 @@ public void performAddInterestPayment() {
         double balance = currentCustomer.checkAccountBalance(account);
         int id = account.getAccountID();
         System.out.println("Your balance for account " + id + " is: $"+balance);
+    }
+
+    public void performWithdraw(){
+        BankAccount account = selectAccount();
+        if (account == null) {
+            return;
+        }
+        System.out.print("How much do you want to withdraw: ");
+        double amount = keyboardInput.nextDouble();
+        try {
+            account.withdraw(amount);
+            System.out.println("Withdraw successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid withdraw amount.");
+        }
+
     }
 
     public void run() {
