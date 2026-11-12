@@ -215,4 +215,30 @@ public void testTransferInvalidAmount() {
         assertEquals(20,
             account.getTransactionHistory().get(1).getAmount(), 0.01);
     }
+
+
+    @Test
+    public void testTransferToSameAccount() {
+        BankAccount account = new BankAccount();
+        account.deposit(100);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> account.transfer(account, 50));
+
+        assertEquals(100, account.getBalance(), 0.01);
+        assertEquals(1, account.getTransactionHistory().size());
+    }
+
+    @Test
+    public void testTransferToNullAccount() {
+        BankAccount account = new BankAccount();
+        account.deposit(100);
+
+        assertThrows(IllegalArgumentException.class,
+            () -> account.transfer(null, 50));
+
+        assertEquals(100, account.getBalance(), 0.01);
+        assertEquals(1, account.getTransactionHistory().size());
+    }
+
 }

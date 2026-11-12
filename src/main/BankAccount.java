@@ -29,6 +29,7 @@ public class BankAccount {
     public void withdraw(double amount) {
         if (amount >= 0) {
             this.balance -= amount;
+            transactionHistory.add(new Transaction("Withdrawal", amount));
         } else {
             throw new IllegalArgumentException();
         }
@@ -39,6 +40,7 @@ public class BankAccount {
             throw new IllegalArgumentException("Invalid fee amount");
         }
         balance -= amount;
+        transactionHistory.add(new Transaction("Fee", amount));
     }
 
    public void addInterestPayment(double amount) {
