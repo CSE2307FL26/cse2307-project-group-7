@@ -18,20 +18,18 @@ public class MainMenu {
     }
 
     public void displayOptions() {
-    System.out.println("Welcome to the 237 Bank App!");
+        System.out.println("Welcome to the 237 Bank App!");
 
-    System.out.println("1. Make a deposit");
-    System.out.println("2. Exit the app");
-    System.out.println("3. Withdraw from account");
-    System.out.println("4. Check account balance");
-    System.out.println("5. View transaction history");
-    System.out.println("6. Create new account");
-    System.out.println("7. Close existing account");
-    System.out.println("8. Transfer between accounts");
-    System.out.println("9. Collect fees (admin)");
-    System.out.println("10. Add interest (admin)");
-
-
+        System.out.println("1. Make a deposit");
+        System.out.println("2. Exit the app");
+        System.out.println("3. Withdraw from account");
+        System.out.println("4. Check account balance");
+        System.out.println("5. View transaction history");
+        System.out.println("6. Create new account");
+        System.out.println("7. Close existing account");
+        System.out.println("8. Transfer between accounts");
+        System.out.println("9. Collect fees (admin)");
+        System.out.println("10. Add interest (admin)");
 }
 
     public int getUserSelection(int max) {
@@ -111,142 +109,140 @@ public class MainMenu {
     
 
     public void performViewTransactionHistory() {
-    BankAccount account = selectAccount();
+        BankAccount account = selectAccount();
 
-    if (account == null) {
+        if (account == null) {
+            return;
+        }
+
+        ArrayList<Transaction> history = account.getTransactionHistory();
+
+        if (history.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        for (Transaction transaction : history) {
+            System.out.println(transaction);
+        }
+    }
+
+    public void performCreateAccount() {
+        BankAccount newAccount = new BankAccount();
+        currentCustomer.addAccount(newAccount);
+
+        System.out.println("Account created successfully!");
+        System.out.println("Account ID: " + newAccount.getAccountID());
+    }
+
+
+
+    public void performCloseAccount() {
+        ArrayList<BankAccount> accounts = currentCustomer.listAccounts();
+
+        if (accounts.isEmpty()) {
+            System.out.println("No accounts available to close.");
+            return;
+        }
+
+        BankAccount account = selectAccount();
+
+        if (account == null) {
+            return;
+        }
+
+        int accountIndex = accounts.indexOf(account);
+
+        if (currentCustomer.removeAccount(accountIndex)) {
+            System.out.println("Account closed");
+        } else {
+            System.out.println("Unable to close account.");
+        }
+    }
+    public void performDeposit() {
+        BankAccount account = selectAccount();
+
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("How much do you want to deposit: ");
+        double amount = keyboardInput.nextDouble();
+
+        try {
+            account.deposit(amount);
+            System.out.println("Deposit successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid deposit amount.");
+        }
+    }
+
+    public void performTransfer() {
+        if (currentCustomer.listAccounts().size() < 2) {
+            System.out.println("You need at least two accounts to transfer money.");
         return;
+        }
+
+        System.out.println("Select source account:");
+        BankAccount source = selectAccount();
+
+        if (source == null) {
+            return;
+        }
+
+        System.out.println("Select target account:");
+        BankAccount target = selectAccount();
+
+        if (target == null) {
+            return;
+        }
+
+        System.out.print("Enter transfer amount: ");
+        double amount = keyboardInput.nextDouble();
+
+        try {
+            source.transfer(target, amount);
+            System.out.println("Transfer successful.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Transfer failed.");
+        }
     }
-
-    ArrayList<Transaction> history = account.getTransactionHistory();
-
-    if (history.isEmpty()) {
-        System.out.println("No transactions found.");
-        return;
-    }
-
-    for (Transaction transaction : history) {
-        System.out.println(transaction);
-    }
-}
-
-public void performCreateAccount() {
-    BankAccount newAccount = new BankAccount();
-    currentCustomer.addAccount(newAccount);
-
-    System.out.println("Account created successfully!");
-    System.out.println("Account ID: " + newAccount.getAccountID());
-}
-
-
-
-public void performCloseAccount() {
-    ArrayList<BankAccount> accounts = currentCustomer.listAccounts();
-
-    if (accounts.isEmpty()) {
-        System.out.println("No accounts available to close.");
-        return;
-    }
-
-    BankAccount account = selectAccount();
-
-    if (account == null) {
-        return;
-    }
-
-    int accountIndex = accounts.indexOf(account);
-
-    if (currentCustomer.removeAccount(accountIndex)) {
-        System.out.println("Account closed");
-    } else {
-        System.out.println("Unable to close account.");
-    }
-}
-public void performDeposit() {
-    BankAccount account = selectAccount();
-
-    if (account == null) {
-        return;
-    }
-
-    System.out.print("How much do you want to deposit: ");
-    double amount = keyboardInput.nextDouble();
-
-    try {
-        account.deposit(amount);
-        System.out.println("Deposit successful.");
-    } catch (IllegalArgumentException e) {
-        System.out.println("Invalid deposit amount.");
-    }
-}
-
-public void performTransfer() {
-    if (currentCustomer.listAccounts().size() < 2) {
-        System.out.println(
-            "You need at least two accounts to transfer money."
-        );
-        return;
-    }
-
-    System.out.println("Select source account:");
-    BankAccount source = selectAccount();
-
-    if (source == null) {
-        return;
-    }
-
-    System.out.println("Select target account:");
-    BankAccount target = selectAccount();
-
-    if (target == null) {
-        return;
-    }
-
-    System.out.print("Enter transfer amount: ");
-    double amount = keyboardInput.nextDouble();
-
-    try {
-        source.transfer(target, amount);
-        System.out.println("Transfer successful.");
-    } catch (IllegalArgumentException e) {
-        System.out.println("Transfer failed.");
-    }
-}
     
-public void performCollectFee() {
-    BankAccount account = selectAccount();
+    public void performCollectFee() {
+        BankAccount account = selectAccount();
 
-    if (account == null) {
-        return;
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("Enter the fee amount: ");
+        double feeAmount = keyboardInput.nextDouble();
+
+        try {
+            account.collectFee(feeAmount);
+            System.out.println("Fee collected successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to collect fee, invalid amount.");
+        }
     }
 
-    System.out.print("Enter the fee amount: ");
-    double feeAmount = keyboardInput.nextDouble();
+    public void performAddInterestPayment() {
+        BankAccount account = selectAccount();
 
-    try {
-        account.collectFee(feeAmount);
-        System.out.println("Fee collected successfully.");
-    } catch (IllegalArgumentException e) {
-        System.out.println("Unable to collect fee, invalid amount.");
+        if (account == null) {
+            return;
+        }
+
+        System.out.print("Enter the interest payment amount: ");
+        double interestAmount = keyboardInput.nextDouble();
+
+        try {
+            account.addInterestPayment(interestAmount);
+            System.out.println("Interest payment added successfully.");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Unable to add interest payment: invalid amount.");
+        }
     }
-}
-
-public void performAddInterestPayment() {
-    BankAccount account = selectAccount();
-
-    if (account == null) {
-        return;
-    }
-
-    System.out.print("Enter the interest payment amount: ");
-    double interestAmount = keyboardInput.nextDouble();
-
-    try {
-        account.addInterestPayment(interestAmount);
-        System.out.println("Interest payment added successfully.");
-    } catch (IllegalArgumentException e) {
-        System.out.println("Unable to add interest payment: invalid amount.");
-    }
-}
 
     public void performCheckBalance(){
         BankAccount account = selectAccount();
