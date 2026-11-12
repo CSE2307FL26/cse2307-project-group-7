@@ -1,7 +1,6 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
@@ -66,6 +65,7 @@ public class CustomerTest {
         } catch (IllegalArgumentException e) {
             //do nothing, test passes
         }
+    }
     
     @Test 
     public void testCloseAcct(){
