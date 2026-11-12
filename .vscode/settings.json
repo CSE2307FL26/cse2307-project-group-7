@@ -5,6 +5,11 @@
     ],
     "java.project.referencedLibraries": [
         "lib\\junit-platform-console-standalone-1.13.0-M3.jar",
+<<<<<<< HEAD
         "test-lib\\**\\*.jar"
+=======
+        "test-lib\\**\\*.jar",
+        "test-lib/**/*.jar"
+>>>>>>> origin/development
     ]
 }
