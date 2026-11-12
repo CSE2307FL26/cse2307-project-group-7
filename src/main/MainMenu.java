@@ -61,7 +61,7 @@ public class MainMenu {
                 performViewTransactionHistory();
                 break;
             case 6:
-                // performCreateAccount();
+                performCreateAccount();
                 break;
             case 7:
                 performCloseAccount();
@@ -127,6 +127,14 @@ public class MainMenu {
     for (Transaction transaction : history) {
         System.out.println(transaction);
     }
+}
+
+public void performCreateAccount() {
+    BankAccount newAccount = new BankAccount();
+    currentCustomer.addAccount(newAccount);
+
+    System.out.println("Account created successfully!");
+    System.out.println("Account ID: " + newAccount.getAccountID());
 }
 
 
