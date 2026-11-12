@@ -56,7 +56,7 @@ public class MainMenu {
                 performWithdraw();
                 break;
             case 4:
-                // performCheckBalance();
+                performCheckBalance();
                 break;
             case 5:
                 performViewTransactionHistory();
@@ -217,6 +217,17 @@ public void performAddInterestPayment() {
         System.out.println("Unable to add interest payment: invalid amount.");
     }
 }
+
+    public void performCheckBalance(){
+        BankAccount account = selectAccount();
+        if (account == null) {
+            return;
+        }
+        double balance = currentCustomer.checkAccountBalance(account);
+        int id = account.getAccountID();
+        System.out.println("Your balance for account " + id + " is: $"+balance);
+    }
+
     public void performWithdraw(){
         BankAccount account = selectAccount();
         if (account == null) {
@@ -230,6 +241,7 @@ public void performAddInterestPayment() {
         } catch (IllegalArgumentException e) {
             System.out.println("Invalid withdraw amount.");
         }
+
     }
 
     public void run() {
