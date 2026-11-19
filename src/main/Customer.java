@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Customer {
 
     private int customerID;
+    private String username;
+    private String password;
 
     private ArrayList<BankAccount> accounts;
 
@@ -13,8 +15,23 @@ public class Customer {
         this.accounts = new ArrayList<>();
     }
 
+    public Customer(int customerID, String username, String password){
+        this.customerID = customerID;
+        this.username = username;
+        this.password = password;
+        this.accounts = new ArrayList<>();
+    }
+
     public int getCustomerID(){
         return customerID;
+    }
+
+    public String getUsername(){
+        return username;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
     public void addAccount(BankAccount account){

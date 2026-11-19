@@ -11,10 +11,9 @@ public class MainMenu {
 	private Customer currentCustomer;
     private Scanner keyboardInput;
 
-    public MainMenu() {
-        this.currentCustomer = new Customer(1);
-        this.currentCustomer.addAccount(new BankAccount());
-        this.keyboardInput = new Scanner(System.in);
+    public MainMenu(Customer customer, Scanner keyboardInput) {
+        this.currentCustomer = customer;
+        this.keyboardInput = keyboardInput;
     }
 
     public void displayOptions() {
@@ -270,6 +269,7 @@ public class MainMenu {
 
     }
 
+
     public void run() {
         int selection = -1;
         while (selection != EXIT_SELECTION) {
@@ -280,7 +280,13 @@ public class MainMenu {
     }
 
     public static void main(String[] args) {
-        MainMenu bankApp = new MainMenu();
-        bankApp.run();
+        Scanner keyboardInput = new Scanner(System.in);
+        CustomerDirectory directory = new CustomerDirectory();
+        LoginMenu loginMenu = new LoginMenu(directory, keyboardInput);
+        Customer customer = loginMenu.run();
+        if(customer!= null){
+            MainMenu bankApp = new MainMenu(customer, keyboardInput);
+            bankApp.run();
+        }
     }
 }
